@@ -272,3 +272,61 @@ Do you find the previous code too complex? Fortunately, there's a solution that 
 Creating a default dict involves specifying the default return type it should provide. However, it's essential not to mistakenly pass in an instance of the desired object; rather, you must provide a callable function responsible for creating the object. Once you have your default dict, you can add items to it just like you would with a regular dictionary.
 
 What makes default dict particularly useful is its automatic creation of a new default value if a key doesn't yet exist, eliminating the need to handle errors as a regular dictionary would. This feature greatly simplifies your code. While combining lists and dictionaries is potent in Python, the capabilities of Python data structures extend far beyond that!
+
+### List Comprehensions
+-----------------------
+
+List comprehension is a unique capability in Python distinguishing it from other programming languages. Despite its name, "comprehension" doesn't pertain to understanding, but rather to the comprehensive generation of lists. To illustrate, consider a list of numbers such as one, two, three, four, and five.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/45e43f3e-8b5e-40b1-bd36-2b73d27328ba)
+- List Comprehension
+
+With list comprehension, we can easily double each item in a list, as shown by the expression "two times item for item in my list." Enclosed in square brackets, this technique mirrors the syntax of a for loop. You have the flexibility to choose any variable name to represent list items, provided it remains consistent throughout.
+
+List comprehension condenses a for loop into a single line while simultaneously generating a copy of the iterated list. Moreover, it facilitates filtering or applying functions to every list item.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/513b1ed6-e5aa-46c2-b3eb-1c5e058e172f)
+- List comprehension with filters
+
+Let's play around with list comprehension! As we discussed earlier, list comprehension can serve as a filter. For instance, consider a list named "my list," containing numbers ranging from 0 to 99 generated using the "range" function. We can create a filtered list by extracting only the numbers divisible by 10. This involves using the "modulus" operator to identify numbers in "my list" where the remainder after division by 10 equals 0. The result is a list comprising only the multiples of 10.
+
+Now, let's modify the code slightly. Instead of selecting numbers divisible by 10, we'll pick those with a remainder less than 3 after division by 10. This modification yields a list containing numbers ending in 0, 1, or 2.
+
+To enhance readability, we'll convert the filtered list into a print statement. This example demonstrates that list comprehensions are versatile tools, useful not only for numerical data but also for strings.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/83a2249e-0f4a-4de4-9065-a847992c3d35)
+- List comprehensions with functions
+
+Let me introduce you to a handy string function called "split." This function allows you to divide a string based on a specified character or string. For instance, consider the string "myString," which reads "my name is Ryan Mitchell, I live in Boston." Applying the "split" function to it using the period as the delimiter would split the string into two sentences. If no delimiter is provided, the "split" function defaults to using spaces, effectively dividing the string into individual words.
+
+To further refine our text, we might want to eliminate periods and convert all words to lowercase. We can achieve this by crafting a new function called "cleanWord," leveraging the "replace" and "lower" functions to handle these tasks. It's worth noting that chaining functions in this manner can streamline your code, but it's essential to strike a balance to prevent excessively long and hard-to-read lines.
+
+Now, let's implement the "cleanWord" function on our string using a list comprehension. This will yield a tidy list containing all the words in the text. If we wish to filter this list to only include short words, such as those comprising one or two letters, we could incorporate a condition using the "len" function.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/439d29c7-8e5f-4a46-978a-40a379b5d39c)
+- Nested list comprehensions
+
+List comprehensions are incredibly useful and frequently employed for tasks like text cleaning and managing large datasets. Let me illustrate a final example: nested list comprehension. With just one line of code, we can clean up words in a sentence and organize them by the sentence they belong to. Here's how it looks:
+
+```python
+cleanWord = [word for sentence in myString.split('.') for word in sentence.split()]
+```
+
+While it might seem complex initially, what's happening is that we're breaking the original text into sentences and then applying a nested list comprehension to each sentence. This produces a list of lists, forming a two-dimensional structure that groups clean words by the sentence they originated from.
+
+In essence, list comprehensions are a fantastic addition to your Python toolkit, enhancing code readability and adhering to Pythonic principles. So, have fun experimenting with them! Congratulations, you're now officially a list comprehension expert.
+
+### Dictionaries and Comprehensions
+-----------------------------------
+
+In Python, dictionary comprehensions offer a way to generate a new dictionary from an iterable structure, akin to list comprehensions for creating lists. For instance, suppose we begin with a list of tuples containing key-value pairs. Employing the syntax "animals = {item[0]: item[1] for item in animalList}" enables us to form a dictionary from this list. It's important to observe the use of a colon to separate the key and value, with the entire comprehension enclosed within curly braces.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d2fb6550-ec1a-4d2c-ab0c-598877876ae4)
+- Dictionaries and comprehensions
+
+There's a more streamlined approach to crafting dictionary comprehensions using tuple unpacking. Instead of employing "item[0]: item[1]", we can simply use "key: value" and replace "item" with "(key, value)". This eliminates the need to individually index each element of the tuple. However, it's crucial to recognize that we can only unpack as many variables as there are elements in each tuple. Attempting to unpack more than two variables will result in a "not enough values to unpack" error.
+
+Should we desire to revert our dictionary back into a list, we can utilize the "items" method, which yields a "dict_items" object containing a list of key-value pairs. This object can then be converted into a list using the "list" function. But what if we seek to alter the structure of our list?
+
+By employing a list comprehension with the syntax "name_value = [{'name': key, 'value': value} for key, value in animals.items()]", we can generate a list of dictionary objects wherein the original keys and values are positioned under the "name" and "value" fields. This underscores the adaptability of both dictionary and list comprehensions for manipulating and formatting data in Python.
+
