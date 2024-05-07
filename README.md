@@ -420,3 +420,79 @@ With the function in place, we can execute the desired operation by providing th
 ### Variables and Scope
 -----------------------
 
+<i>Function Scope</i>
+
+In a previous section, *args and **kwargs were employed to display the arguments passed into a function, providing us with a tuple and a dictionary of the passed arguments, respectively. However, there's an alternative approach that enables access to all variables within a Python function without the use of asterisks. This approach is known as the "locals" function.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/fd859a6e-e52c-4d1b-893f-b6c74a4963af)
+- Function scope
+
+<i>locals()</i>
+
+Let's update the original function definition to execute the operation on num1 and num2, with the operation defaulting to addition. Then, we'll utilize the locals function in Python to print the output.
+
+For example, if we call performOperation with the arguments one and two, specifying multiplication as the operation, we'll receive a dictionary containing all the variables passed in, whether provided as positional or keyword arguments.
+
+Why the name "locals"? These are the variable names accessible only within the function. Remember, variables can be named anything within the function definition and remain available anywhere within that function. However, attempting to reference a variable outside its scope will result in an error.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/352b47c3-fd5d-4ee9-9db0-a00ba0d076f5)
+- locals()
+
+In Python, variables fall into two categories: local variables, defined within a function, and global variables, defined outside the function in the main code block. Fortunately, Python provides a convenient built-in function called globals, which allows us to access all these variables.
+
+<i>globals()</i>
+
+Executing the code will display numerous items, including Python's pre-built variables that prove useful when dealing with classes and packages. Additionally, Jupyter Notebooks utilize various variables to handle their data, encompassing all content within notebook cells as part of this data. Python operates various background processes, and the scope of variables accessible in a given line of code determines which variables can be utilized. This scope classification entails global variable scope and local variable scope, which we'll investigate further through experimentation with several functions.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/f674bf97-3703-4c48-a6a9-89a911bd4e5a)
+- globals()
+
+<i>Global and Local Scope</i>
+
+We aim to develop two functions: the first one with variables A and B, and the second one with variables C and B. Each function will output its local variables. Function one will be invoked with arguments 1 and 2, while function two will be called with arguments 3 and 4. Both functions possess their distinct local variable scopes and can access any variables in the global scope. However, they lack the capability to access each other's data.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/738b42a9-4469-420d-a379-8dd667114915)
+- Global and local scope
+
+If we set a variable, "message," in the global scope and print it within both functions, we can observe that both functions can access it. However, if an attempt is made to print "varA" within function two, an error will arise since "varA" is confined to the local scope of function one, not function two.
+
+In contrast, if "varA" is defined in the global scope, it can be printed within both functions. Python examines the local scope first when searching for a variable's data, then the global scope. We can redefine "message" within function one's local scope and print both the local and global values of "message."
+
+We can define a function within another function, as demonstrated by the inner function within function one. This inner function is solely accessible within function one. An attempt to invoke it outside of function one will result in a syntax error. When the local variables in function one are printed, the inner function is designated as a variable. This prompts us to question whether functions can be treated as variables.
+
+### Functions As Variables
+--------------------------
+
+<i>Variables as Functions</i>
+
+Variables and functions both have names and data associated with them. However, for functions, this data includes information about required parameters and the lines of instruction to be executed. In Python, a function is represented as an object.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/9db0c9fe-e8ab-4ad1-9f32-90ea66f7493e)
+- Variables as functions
+
+<i>Viewing Function Data With  __code__</i>
+
+By accessing the "code" attribute of Python function objects, one can verify that functions are essentially variables in Python. Utilizing this attribute, you can print the names of variables and byte objects for all lines of instruction within a function. However, this is not a commonly employed technique in typical programming scenarios.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/10615dbf-1be1-4227-a71b-1dedf97c8f5d)
+- Viewing function data with  __code__
+
+<i>Text Processing in Python</i>
+
+Consider a scenario with familiar text and function names to illustrate a concept. Two text processing operations and a function capable of converting text to lowercase, removing punctuation, new lines, words of three characters or fewer, and long words. By listing these functions, one can change their order or decide which ones to apply.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/56f88484-1d29-4bc9-b16d-7aa75071e4d9)
+- Text processing in Python
+
+We'll assemble a list named "processing functions" containing operations like "lowercase," "remove punctuation," and "remove new lines." Then, through a for loop, we'll execute these functions on a text variable and display the modified text. If we include "remove long words" in the list, it will also eliminate short words. This method is highly adaptable for business processes with dynamic needs, offering flexibility in choosing and arranging text processing operations.
+
+<i>Lambda Functions</i>
+
+Lambda functions provide a means to define a function without explicitly assigning it a variable name. Similar to how simple expressions like 5 or 2 + 3 can stand alone without being stored in a variable, lambda functions can be created using the lambda keyword. For instance, lambda x: x + 3 is a lambda function that takes a parameter x and returns the result of adding three to it. Lambda functions don't require the return keyword since it's implied.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ddacb33e-8c97-49c8-8061-0d8c6565593b)
+- Lambda Functions
+
+Lambda functions are useful when you want to pass a function as an argument to another Python function, like the sorted function, which sorts a list of values. For example, if you have a list of dictionaries and want to sort them based on a specific key, you can use the key parameter of the sorted function and pass in a lambda function. This lambda function takes an item in the list and returns the value to be used for sorting.
+
+Lambda functions offer conciseness and convenience for creating small functions needed during code writing. That's it! You now have a foundational understanding of Python functions!
