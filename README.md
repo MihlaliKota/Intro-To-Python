@@ -599,3 +599,83 @@ Let's put 1/0 within a try block and add an except block to catch any exception 
 - Try/Except 
 
 We've successfully caught a ZeroDivisionError. Once caught, the exception won't interrupt the program's flow. Remember, exceptions are just classes with attributes, and you can create and manipulate them like any other class. While exceptions may seem daunting, handling them properly adds another layer of robustness to your code. Stick with this course to learn how to write code that, if not entirely free of errors, at least manages them gracefully.
+
+### Managing and Handling Exceptions
+------------------------------------
+
+Exceptions shouldn't intimidate you, but they do require careful handling. We've already glimpsed at one way to manage them using the Try / Except statement. In this case, we're catching the exception and then simply returning it.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/b0173fff-2514-4be4-8f66-a6a1d3c50df5)
+- Try/Except
+
+When using the Try / Except pattern, if we don't necessarily need the specific instance of the exception, we can omit the "as e" part. This way, we catch any error that occurs and simply print out a general message without needing to handle the exception instance.
+
+<i>Finally</i>
+
+Another useful tool is the finally statement. If you take the Try / Except block and add a finally to it, this will always execute and gets printed out.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/e2477a72-eeb2-45bb-9052-2ef88b47c838)
+- Finally
+
+The Try / Finally pattern is handy because it ensures that the code inside the "finally" block always executes, regardless of whether there's an exception in the "try" block or not. No "except" statements are necessary for this. It's commonly used for tasks like timing how long a function takes to execute. 
+
+To create a timer, import the time class and use time.time() to get the current time in seconds. Inside the "finally" block, use an f-string to print out the elapsed time by subtracting the start time from the current time. 
+
+You can also use time.sleep() to pause execution for a specified number of seconds. This can be useful for testing the behavior of your code. Even if an error occurs, like a zero division error, the timer still works as expected. 
+
+Overall, the Try-Finally pattern ensures that necessary cleanup or logging tasks are performed after a statement completes, regardless of any exceptions that may occur.
+
+<i>Catching Exceptions by Type</i>
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/cadbfe2a-f583-4946-9e78-f81a9e0a4716)
+- Catching exceptions by type
+
+You're consistently catching the same exception class, but you can add more except statements above to chain them together effectively.
+
+Let's specifically catch the ZeroDivisionError now. When a ZeroDivisionError occurs, it prints out accordingly. We can also add an except statement for TypeError, although in this case, it won't be triggered because we're causing a ZeroDivisionError, not a TypeError.
+
+To cause a TypeError, try adding an integer to a string, which should result in a TypeError. The order of these except statements matters; Python tries them from top to bottom. It's best to have the more specific exceptions at the top and the most general ones at the bottom.
+
+In complex exception handling scenarios, like with HTTP request-response handling, where various HTTP errors might occur, multiple except statements are used. These blocks of code can be duplicated across many functions. In such cases, consolidating the try and except logic into a single function can be very useful.
+
+<i>Custom Decorators</i>
+
+Custom decorators can also be used to do this. We saw decorators previously with the static method decorator but now we are going to write our own. 
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/747d0e95-b58c-4c20-b11c-6ea6aa0d8c86)
+- Custom decorators
+
+Take all the exception handling code and encapsulate it into a new function named handleException. This function will take another function as an argument and define an inner function called wrapper. The wrapper function will attempt to execute the passed-in function and handle any exceptions that might occur, printing them out. Finally, the wrapper function is returned.
+
+Now, create a decorator named handleException and apply it to a function called causeError, which simply returns the result of one divided by zero. When causeError is called, the handleException decorator will catch any exceptions that might be raised within it. This decorator can be reused with other functions as well.
+
+<i>Raising Exceptions</i>
+
+Using the handleException decorator, create a function named raiseError that contains a raise statement to throw a new exception when reached.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/884df1c9-4200-4ee3-b277-3ff82b7c5a17)
+- Raising exceptions
+
+Consider a function designed to accept any input except zero. If the input is zero, an exception is raised; otherwise, the input is printed. Note that there's no need for an else statement because the execution halts once an exception is raised. However, when using the handleException decorator on a function that takes arguments, adjustments are needed to ensure that the arguments are passed correctly. After modifying the decorator to accommodate arguments, the function behaves as expected, printing the input value or raising an exception based on the input. This capability to raise exceptions becomes more potent when combined with custom exceptions, which we'll explore next.
+
+### Working With Custom Exceptions
+----------------------------------
+
+Custom exceptions is an easy one. In fact, you already know how to do this, class CustomException extends Exception:pass. Now you have written a custom exception. 
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/65dc8681-812e-47f2-a07b-55d4046e1c10)
+- Custom exceptions
+
+Custom exceptions are straightforward classes that often only require the pass statement, inheriting the behavior of the Exception class. Their names usually convey essential information for debugging or user feedback. For instance, a CustomException class might be raised with a specific message to indicate an error condition. These exceptions are typically minimalistic, focusing on organizing and presenting error information efficiently. In a web server application, for instance, HTTP exceptions could be defined with specific subclasses to handle different error scenarios.
+
+<i>Adding Attributes</i>
+
+Let's write an HTTP exception with a static status code and a message attribute, and then some information about how to format the string that it passes to the parent exception. 
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/48a7d35d-3a01-46d6-a626-9d3a1efddb52)
+- Adding attributes
+
+Here's how you can create custom exception classes tailored to your application's needs. Start with an HttpException class that inherits from Exception and includes attributes for status code and message, initially set to None. Override the constructor to assign these attributes. Then, define specific subclasses like NotFoundHttpException and ServerErrorHttpException, each with its status code and message.
+
+By raising instances of these custom exceptions in your code, you can effectively communicate error conditions and their significance. These custom classes serve as documentation, detailing potential issues, their causes, and potential solutions, while also distinguishing between routine errors and critical issues requiring developer intervention.
+
