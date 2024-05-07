@@ -330,3 +330,93 @@ Should we desire to revert our dictionary back into a list, we can utilize the "
 
 By employing a list comprehension with the syntax "name_value = [{'name': key, 'value': value} for key, value in animals.items()]", we can generate a list of dictionary objects wherein the original keys and values are positioned under the "name" and "value" fields. This underscores the adaptability of both dictionary and list comprehensions for manipulating and formatting data in Python.
 
+### If and Else
+---------------
+
+If you've worked with other programming languages, you might be familiar with the switch statement, which assesses a sequence of values and executes the code corresponding to the first true value encountered. But don't fret if you're unfamiliar; Python outshines other languages anyway.
+
+Let's tackle a classic programming challenge: cycling through numbers one to 100 and printing "Fizz" for multiples of three, "Buzz" for multiples of five, "FizzBuzz" for multiples of 15, and the number itself if none of these conditions are met. We can achieve this in Python using if and else statements.
+
+However, the code can become a tad convoluted with all the indentation. So, let's revamp it using the elif statement, short for "else if." The approach is to start with a single if statement, followed by as many elif statements as needed, with the option of concluding with a single else statement at the end to handle any unmatched scenarios.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ae11ecc8-c4c4-4171-8eed-ecbba6e03174)
+- If statements with “FizzBuzz”
+
+If-else statements can sometimes sprawl across multiple lines, which can make the code less concise. For situations where you need to evaluate a condition in a single line, you can turn to the ternary operator. It swiftly assesses a Boolean condition, returning one value if true and another if false.
+
+As Python enthusiasts, our aim is to craft code that's clear and easy to read. While ternary operators can help achieve this, they should be used judiciously to prevent code from becoming overly intricate.
+
+### While
+---------
+
+When working with while loops, caution is necessary as they have the potential to run indefinitely. To exit a loop prematurely, the break statement proves useful, immediately halting the loop and proceeding to the subsequent line of code outside the loop. Conversely, if there are specific lines within a loop that you wish to bypass, the continue statement becomes handy, allowing the skipping of subsequent lines and reinitiating the loop for the next iteration from the top.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/6e952fd0-efa8-49e1-819f-e6cf3ea01824)
+- While
+
+Occasionally, you may employ a continue statement within an if statement to avoid executing certain code within a loop based on specific conditions. An alternative approach involves utilizing continue and break to enhance code readability for fellow programmers by restructuring it. While these statements may not always be imperative, discerning their appropriate usage and being prepared to employ them when necessary is crucial.
+
+### For
+-------
+
+You will enjoy using the for loop syntax in Python. It's super intuitive, and it reads like plain English.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/075e0f07-8e2b-471b-b22d-4cc46587e284)
+- For
+
+The for loop is a fundamental construct in Python, allowing you to iterate over a list and assign each element to a variable like "item" as you move through it. It's concise and widely used in Python coding. Similar to while loops, you can employ statements like pass, continue, and break within for loops. Pass is handy for creating placeholders, continue skips the remainder of an iteration, and break halts the loop prematurely. An interesting feature we haven't explored yet is the break else statement, useful for identifying prime numbers efficiently. This pattern can also be applied to while loops. Mastering these loop constructs is key to maintaining clean and Pythonic code.
+
+## Python 102: Python Fundamentals
+
+### Anatomy of a Function
+-------------------------
+
+Many beginner programming courses draw parallels between programming and baking a cake, suggesting that following step-by-step instructions yields the desired outcome. While this analogy holds some truth at a surface level, programming is far more intricate. It involves intricate systems, tasks, objects, and interactions among components. Thus, programmers must adopt a mindset centered on designing programs rather than merely executing linear instructions.
+
+In programming, functions serve as the fundamental building blocks, rather than individual lines of code. Functions imbue a program with functionality, making them indispensable. Let's explore functions further by dissecting some code to understand their mechanics in depth.
+
+<i>Functions</i>
+
+Functions consist of a name and parameters, which are specified using the "def" statement. Let's illustrate by creating a function called "performOperation," with "num1," "num2," and "operation" as parameters. The objective is to design a straightforward function that accepts two numbers and an operation (either "sum" or "multiply") as inputs and produces a result. If the operation is "sum," the function will output the sum of "num1" and "num2," while if it's "multiply," it will return the product of the two numbers.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/982932cc-95bc-4a43-81b5-57114c63642e)
+- Functions
+
+To demonstrate, we could invoke the function performOperation with two arguments, 2 and 3, and the operation "sum." This should yield an expected result of 5.
+
+Yet, continuously specifying the operation parameter as "sum" might become cumbersome over time. To mitigate this, we can establish a default value for the operation parameter by utilizing named parameters or keyword arguments. Let's relocate the code and assign the default value of the operation to "sum."
+
+<i>Named Parameters</i>
+
+Without this part, the outcome will be five. Nevertheless, we can alternatively specify our preferred value. By assigning "operation equals multiply," we can override it. In invoking this function, explicitly stating "operation equals multiply" is unnecessary. Instead, simply provide "multiply" as the third parameter.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ce464046-213e-44b5-8ec4-6dd26652573a)
+- Named parameters
+
+Consider adding another keyword argument, "message", to our function. Set a default message to be printed when the function is invoked. During the function call, position the message either before or after the operation. Ensure clarity by separating the arguments with commas to specify their respective positions.
+
+<i>*args</i>
+
+In Python, there's a rule governing the use of keyword arguments: they must follow positional arguments. The sequence of the initial two arguments is fixed and cannot be altered. However, subsequent to these compulsory arguments, keyword arguments can be arranged in any order.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/2f3dec68-f4b7-48fa-a22b-d3dfba40410a)
+- *args
+
+While optional arguments offer flexibility, they have a limitation regarding the number of variables they can handle. To enable users to input any number of variables, prepend the argument name with an asterisk symbol, creating a pointer to the supplied variables.
+
+In the given example, the function "performOperation" is invoked with three arguments although it anticipates only one. By prefixing "args" with an asterisk, Python interprets the variable name as a reference to the passed-in arguments. However, this technique solely applies to positional arguments, not keyword arguments. Passing in a keyword argument will result in an "unexpected keyword argument" error.
+
+<i>**kwargs</i>
+
+To manage keyword arguments, a method named "kwargs," an abbreviation for keyword arguments, can be employed. When "kwargs" is printed, it reveals that keyword arguments are now stored as a dictionary rather than a tuple. This choice is logical because keyword arguments consist of keys and values and can be provided in any sequence, making a dictionary a suitable data structure for accessing them.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/b9d84418-082a-450f-883a-52bd180da1a6)
+- **kwargs
+
+Let's enhance the flexibility of the performOperation function further. First, import the math library using "import math". Then, redefine the performOperation function to utilize "args" as the default argument, with the operation set to "sum" by default. If the operation is "sum", it will return the sum of the args using math.sum. Alternatively, if the operation is "multiply", it will return the product of the args using math.prod.
+
+With the function in place, we can execute the desired operation by providing the appropriate arguments. For instance, if we supply the numbers 1, 2, and 3, the result will be 6. Similarly, if we extend this to include the numbers 6, 7, and 8, the result will be 336.
+
+### Variables and Scope
+-----------------------
+
