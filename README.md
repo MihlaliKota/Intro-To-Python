@@ -496,3 +496,106 @@ Lambda functions provide a means to define a function without explicitly assigni
 Lambda functions are useful when you want to pass a function as an argument to another Python function, like the sorted function, which sorts a list of values. For example, if you have a list of dictionaries and want to sort them based on a specific key, you can use the key parameter of the sorted function and pass in a lambda function. This lambda function takes an item in the list and returns the value to be used for sorting.
 
 Lambda functions offer conciseness and convenience for creating small functions needed during code writing. That's it! You now have a foundational understanding of Python functions!
+
+### Anatomy of a Class
+----------------------
+
+<i>Instance Attributes</i>
+
+Understanding classes can be daunting, especially when it comes to identifying their purpose and how to assign members to them. Despite this complexity, consider a previously defined class, the dog class, as an example. It comprises two instance attributes, name and legs, both inherent to every instance of the dog class. For instance, when creating a new instance like "Rover," accessing its name and legs is as simple as using "my_dog.name" and "my_dog.legs," respectively.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/123b777b-ee57-4784-bb28-782494645e28)
+- Instance attributes
+
+So, we may ask ourselves, is having four legs an inherent property of being a dog? Even though three-legged dogs are adorable, we can create a class for them as well.
+
+<i>Static Attributes</i>
+
+Let's alter how the legs attribute is managed in the class for now. Rather than defining it within the constructor, let's set it as a static variable outside of the constructor. Consequently, every instance of the class will share the same value for legs. Accessing the legs attribute directly on the class itself can be done by calling `dog.legs`. These variables are termed "static" because they remain constant across instances and are typically employed to store constants or essential business logic.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/38d13be3-f07c-431a-b74e-98acb8ece49f)
+- Static Attributes
+
+A getter method retrieves the value of a variable, denoted as `get_legs` in this scenario. Interestingly, it doesn't require the `self` attribute to be passed because `legs` is a static variable within the class. While it's customary to call the method without passing in `self`, it's also permissible to include it.
+
+Remember to be careful when creating a class and think about how it will be used and what's most convenient for the user.
+
+### Instance and Static Methods
+-------------------------------
+
+String parsing is often a fascinating task in Python. To exemplify this, let's create a class named WordSet, designed to manage a set of words:
+
+1. Begin with an empty set and populate it by feeding in large text blocks, inclusive of punctuation.
+2. Utilize the method `add_text` for incorporating text. Initially, invoke the `clean_text` method to eliminate punctuation and convert all characters to lowercase.
+3. Proceed by using the `split` function to transform the sentence into a list of words, subsequently adding them to the set.
+4. Conclude by printing the set of words.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/4b3d3864-e34c-47e8-8c9f-ed5c5cb4277f)
+- Static instances and methods
+
+The method `clean_text` is designated as static since it's not tied to any specific instance of the class. On the contrary, `add_text` is an instance method, specific to a particular instance. Static variables like `replace_puncs` can be introduced to regulate which punctuations are replaced. These static variables can be referenced either through the class name or a class instance, unlike instance methods, which can't be accessed via the class name.
+
+We can solve this issue in Python by using a decorator, which is a special annotation or description for a function definition. 
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/e5b2e887-50b5-45f5-b2a5-1e0dbced79fd)
+- Decorators
+
+By adding the @staticmethod decorator to the function definition, it explicitly states in Python that the function is a static method and should not have "self" passed in as an argument. This allows us to use the function without creating an instance of the class. 
+
+### Inheritance
+---------------
+
+<i>Class Inheritance</i>
+
+In computer science and Python programming, one class can inherit all the methods and attributes of another class. The original class is called the parent class, and the new class that extends it is termed the child class. This inheritance occurs automatically when the child class is created.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/543678ae-0e44-4c48-90f1-0488897f00f1)
+- Class Inheritance
+
+Consider the example where a Chihuahua class needs to be created, inheriting from the Dog class. To achieve this, simply write "class Chihuahua(Dog):" and include "pass" for now, which defines the new class. An instance of a Chihuahua can then be created, inheriting all the methods and attributes of the parent Dog class.
+
+In this example, overwrite the dog class's "speak" method with a more appropriate "yap, yap, yap" method for chihuahuas. You can also add new methods to the child class, like a "wag tail" method, which the chihuahua can use. This is useful when an existing class is used but needs a few changes or additions to it.
+
+<i>Extending Built-in Classes</i>
+
+In Python, extending built-in classes like lists is possible. For instance, creating a new list is achieved by instantiating it as "list". Despite its appearance as a function, "list" is, in fact, a class.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/f678c73a-f487-482e-bcb4-4cc12f82b5bf)
+- Extending built-in classes
+
+Let's say you need a list that only accepts unique items, akin to a set. You can achieve this by creating a custom class called "UniqueList" that extends the functionality of the built-in list class. To start, you'll override the append method to ensure uniqueness.
+
+In this custom append method, you'll first check if the item being appended is already in the list. If it is, the method simply returns without adding it again. However, you need to be careful not to call the append method from within the class itself using "self.append," as it could cause infinite recursion. Instead, you'll utilize the "super" function to access the append method of the parent list class.
+
+To test this new class, create an instance of "UniqueList" and append some items to it. Upon printing the list, you'll notice that it only retains unique elements.
+
+Another scenario where "super" comes in handy is in the constructor. If you want to add new attributes to your child class instance without overriding the parent class's constructor entirely, you can do so by calling "super" to invoke the parent constructor first before adding your new attributes.
+
+Although class inheritance might seem complex initially, it's a sophisticated tool for addressing challenging programming tasks. And the best part? Understanding inheritance doesn't require a law degree!
+
+### Handling Errors and Exceptions
+----------------------------------
+
+In our Python journey, we've faced various challenges. One familiar hiccup is the zero division error, triggered when attempting to divide by zero.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/8a676b1a-d0ee-48c5-8e81-f9a21211bc95)
+- Errors and exceptions
+
+When dealing with issues in Python, they're sometimes labeled as errors or exceptions interchangeably. Although the official Python documentation distinguishes them based on their runtime determination and retriability, there are many exceptions to this rule. In essence, errors and exceptions function similarly. They all stem from the base exception class in Python.
+
+For example, the division by zero error is categorized as an arithmetic error, which is a type of exception that extends the base exception class. This class offers valuable properties for handling exceptions, such as halting code execution and providing insights into why and how the execution stopped.
+
+Consider the zero division error. It reveals the file and specific line where the error occurred. When encapsulated within a function like "causeError" and called, the stack trace becomes more detailed, showing both the original function call location and the point within that function where the error occurred.
+
+This comprehensive trace of function calls is known as a stack trace, which aids in debugging by offering a trail through nested operations. By creating functions like "callCauseError" that return and invoke "causeError," we can extend the stack trace even further. In complex programs spread across multiple files, these stack traces can become extensive, underscoring the importance of interpreting them effectively.
+
+Exceptions can initially appear intimidating, as a minor error within numerous lines of code could lead to a program crash. However, they're merely classes. While this topic will be explored in more depth later, it's important to understand that we can handle exceptions using a try/except statement. This allows us to catch exceptions and access the instance of the raised exception, providing a way to manage errors within our code.
+
+<i>Try/Except</i>
+
+Let's put 1/0 within a try block and add an except block to catch any exception that occurs. We'll use the syntax "except Exception as e" to capture the instance of the exception that was raised, with "e" as our variable representing that instance. Then, we'll print the type of "e" to see the type of exception that occurred.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/5cf842f2-63c3-4855-97cf-9a433ccb6062)
+- Try/Except 
+
+We've successfully caught a ZeroDivisionError. Once caught, the exception won't interrupt the program's flow. Remember, exceptions are just classes with attributes, and you can create and manipulate them like any other class. While exceptions may seem daunting, handling them properly adds another layer of robustness to your code. Stick with this course to learn how to write code that, if not entirely free of errors, at least manages them gracefully.
