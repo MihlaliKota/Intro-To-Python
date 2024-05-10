@@ -1016,5 +1016,81 @@ Instead of including stub code, the `dd_gui.py` module contains comments that ou
 
 Overall, the stub code provides the structure for implementation, allowing for separate development of the email class, independent content functions, and the GUI.
 
+### Daily Inspirational Quotes
+------------------------------
 
+With a plan established and the program structure defined, it's time to start implementing the code. In the next section, you'll focus on adding four functions to the "dd_content.py" module. Before diving into this section, consider pausing to practice coding by creating your own "get_random_quote" function.
+
+The implementation might vary from the provided one, as the requirements allow for flexibility and personal interpretation. This is an opportunity to experiment with different approaches and apply your own creative solutions while meeting the overall goals of the project.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/26166520-b221-42ac-9eaa-412167d65453)
+- "dd_content.py" module
+
+To implement the `get_random_quote` function, you first need to decide where the random quotes will come from. Although web scraping libraries like Beautiful Soup or Scrapy could be used, the chosen approach is to create a curated list of inspirational quotes. These quotes, along with their authors, can be stored in various file formats like CSV, JSON, or XML. For simplicity, the CSV format is chosen, with each line containing the author and quote separated by a vertical pipe (`|`) symbol.
+
+In the `dd_content.py` file, the `get_random_quote` function is implemented, starting at line 7. The function accepts a named parameter for the location of the quotes file, with a default value of "quotes.csv". The code that loads the file is wrapped in a try-except block to handle potential errors. The CSV file is opened, and a list of dictionaries is created using list comprehension, with each dictionary containing an author and their quote. The CSV reader uses the vertical pipe as the delimiter.
+
+If an exception occurs, a default quote is provided in the except block to ensure the function always returns a result, even if the CSV file cannot be loaded. This approach adds robustness to the function, allowing it to handle various scenarios without crashing.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/89ac8d0f-f475-44f3-ac4c-54fe59ff02a4)
+- quotes.csv file
+
+At line 17, the `random.choice()` function from the `random` module is used to pick a random quote from the list. The selected quote is then returned as a dictionary object containing the author and the quote itself.
+
+In the `if __name__ == "__main__"` block, you add test code to demonstrate how the `get_random_quote` function works. The function is called without passing an argument, using the default quotes file location. The returned quote is then printed.
+
+To test the exception handling, another call to `get_random_quote()` is made with the quotes file argument set to `None`. This triggers the exception clause, resulting in the default quote being returned. This test ensures that the function behaves as expected when the quotes file is unavailable or invalid.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/f7dc47fe-5bf1-474c-89a9-45a256273ad4)
+- Completed, “dd_content.py”
+
+Running the script will display the generated quotes. The first quote is retrieved from the "quotes.csv" file, and the second quote is the default quote by Eric Idle, as expected.
+
+### Weather Forecasting with OpenWeatherMap
+-------------------------------------------
+
+After implementing the `get_random_quote` function, you can use your editor's code folding feature to hide the completed code. Now, let's move on to the next content function, `get_weather_forecast`, defined at line 19. Since weather forecasts need to be up-to-date, we can't store this data locally like the quotes. Instead, we must fetch it from the internet. There are several ways to do this.
+
+One option is to use a Python web-scraping library to extract forecast data from a website like weather.com. Another approach is to search the Python Package Index (PyPI) for a Python library that retrieves weather data from an online source. A third option is to find an online weather source with an application programming interface (API) that you can call directly from your program.
+
+In this case, we'll use openweathermap.org as our source for weather information, as they offer an API that allows you to fetch current weather data. This approach is generally more reliable than web scraping and gives you direct access to structured data.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/1276e072-0682-4b48-80d4-0f0606032ae8)
+- Openweathermap.org
+
+OpenWeatherMap offers various APIs for accessing current and forecast weather information. To use their services, you must register with OpenWeatherMap to obtain an API key. The good news is that they offer a free tier, which is sufficient for this project. To get your own API key, click the provided link and follow the registration process.
+
+After exploring the available APIs, we choose the 5-Day / 3-Hour Forecast API, which gives weather data in three-hour intervals. The API documentation provides examples that show different ways to call this API, such as by city name, ID number, geographic coordinates, or even ZIP code. Let's use the geographic coordinates option, which requires latitude and longitude to specify the desired forecast location.
+
+This decision raises an important question: where should the weather forecast be focused for the daily digest email? If the digest is for an international audience, you'd ideally customize the forecast for each reader's location. However, tracking the location of every reader adds complexity. To keep it simple for the initial version of the application, use your own location for the forecast, as you are likely the only recipient of the email digest at this stage. This approach simplifies the implementation and keeps the focus on core functionalities without unnecessary complications.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d2edb533-5660-4b16-9059-871bf60aa06d)
+- 5-day weather forecast
+
+When accessing the weather forecast API, the default data format is JSON. The documentation provides examples of the JSON response. Since this JSON response contains more information than needed for the email digest, you only need to extract a few relevant fields. Now let's review the Python code that interacts with the forecast API.
+
+At the beginning of the `dd_content.py` script, you should import three new modules: `requests` from `urllib` to open the API's URL, `json` to parse the response, and `datetime` to format and store timestamps for each forecast period. 
+
+The `get_weather_forecast` function is defined around line 25. It includes an optional parameter named `coords`, a dictionary with latitude and longitude values that specify the forecast's location. The function uses these coordinates to retrieve weather data from the API, and then extracts the required information from the JSON response. By focusing on specific fields, the code keeps the weather forecast concise for the email digest, avoiding unnecessary data.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/4e9115b7-eb36-4553-b28a-fc5cf0ab95c2)
+- Openweather API JSON implementation
+
+The `get_weather_forecast` function retrieves weather forecasts based on geographic coordinates. If no coordinates are provided, it defaults to a location near Cape Canaveral, Florida. The code wraps the forecast retrieval process in a try-except block to handle possible errors. The script requires an OpenWeatherMap API key, which you need to register if you want to use OpenWeatherMap's service. Line 28 creates the URL with the API key and coordinates, and line 29 uses the `requests` module to fetch the JSON response from the API, which is parsed into a Python dictionary using the `json.loads()` function.
+
+Instead of returning the entire parsed dictionary, the script creates a simplified forecast dictionary on line 31. This forecast dictionary contains the city, country, and a list of forecast data for future periods. A for loop on line 35 iterates through the first nine three-hour forecast intervals, gathering information for the next 24 hours. For each period, a dictionary is created to store the timestamp, temperature, weather description, and an icon representing the weather condition. These dictionaries are added to the forecast dictionary's list of forecast periods.
+
+If everything goes smoothly, the `get_weather_forecast` function returns the forecast dictionary on line 41. However, if an error occurs, the except block on line 43 prints the exception and the function returns `None`.
+
+The function is tested in three scenarios. The first case, on line 65, calls the function without arguments, which returns and prints the forecast for the default location (Cape Canaveral). The second case, on line 71, provides coordinates for Austin, Texas, retrieving and printing the weather forecast for that location. The final case, on line 78, defines invalid coordinates, leading to an error during forecast retrieval. The function returns `None`, indicating an error.
+
+These test cases demonstrate the expected behavior in various scenarios. To run the script, open a terminal in VS Code and use the command `python dd_content.py`. The output should show the forecast for the default location, the forecast for Austin, and an error message for invalid coordinates, confirming the function's correct operation.
+
+### Trending Social Media Content (Twitter)
+-------------------------------------------
+
+While developing the `dd_content` module, I needed a way to fetch current Twitter trends. Fortunately, Twitter provides an API for developers to access this information. To use the Twitter API, I had to create a Twitter account, request API access, and obtain an API key. All the necessary information for this process is available on Twitter's website in the "Getting access to the Twitter API" section. However, the API's authentication process appeared complex, so I searched for a Python library that could simplify the task.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/251b034a-f11a-4690-ab08-b7f357874160)
+- Twitter Developer Portal
 
