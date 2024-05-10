@@ -679,3 +679,224 @@ Here's how you can create custom exception classes tailored to your application'
 
 By raising instances of these custom exceptions in your code, you can effectively communicate error conditions and their significance. These custom classes serve as documentation, detailing potential issues, their causes, and potential solutions, while also distinguishing between routine errors and critical issues requiring developer intervention.
 
+### Fundamentals of Threads and Processes
+-----------------------------------------
+
+In previous discussions, it was mentioned that computers rely on memory, but there's more to it. A basic overview of computer functions might skip some details about how they actually work.
+
+Computers have two types of memory: memory (like short-term memory) and file storage (like long-term memory). When you save or retrieve a file from disk, that's using file storage, the long-term memory of a computer. However, when you declare a variable in a program, you're using the computer's memory, similar to short-term memory in the processor. This is a simplified way to understand how computers manage data.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d1586dd1-9fe7-40a8-a1e8-f8d3687a7590)
+- Multiprocessing
+
+What's the problem with treating both storage and memory as one big pool of accessible data? Let's consider what happens when multiple programs are involved.
+
+Suppose one program saves a file to the disk. A second program, running in a different process, can also access this file because they both share the same long-term storage on the physical machine. However, if the first program writes something to its memory, the second program can't see it.
+
+This separation happens because the operating system allocates memory individually to each process running on the computer. It creates boundaries between processes, preventing them from accessing each other's memory. So, memory isn't just a single, undivided blob as it might seem. It's segmented, and access to it is tightly controlled by the operating system.
+
+We still get to run them in parallel, at the same time, but instead of separate processes, they are run with separate threads.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/cef2b67c-5b96-40e9-97c5-ce84ae97639e)
+- Multithreading
+
+A process can contain multiple threads, allowing code to run concurrently. Up until now, everything we've been doing in Python has been within a single thread inside a single process, meaning that we execute one statement at a time. But in this chapter, we'll explore computing tasks in parallel, using multiple threads and processes simultaneously.
+
+### Multithreading
+------------------
+
+Processes and threads may seem like abstract concepts right now, but let's get hands-on and start spinning some up.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/bb04e434-d92e-4ba6-9ced-258f3e0c3eb2)
+- Multithreading
+
+Other programmers will commend your code, saying, "Nice threads." Begin by importing the threading and time modules: `import threading` and `import time`. Then, devise a function that computes the square of a number but takes a significant amount of time to execute. Let's aptly name it `longSquare`. Inside this function, introduce a delay of one second using `time.sleep` and then return the square of the input number. We aim to calculate the squares of several numbers, which would typically take a long time. 
+
+For instance, fetching data from a remote server involves idle time while waiting for the data to arrive, making threads invaluable. They enable parallel waiting instead of sequential waiting.
+
+To illustrate this, create two threads:
+
+1. `t1 = threading.Thread()` and
+2. `t2 = threading.Thread()`.
+
+Specify two keyword arguments: `target`, which is the function's name (`longSquare`), and `args`, the function's arguments encapsulated in a tuple.
+
+Commence both threads using the `start` function (`t1.start()` and `t2.start()`). Lastly, synchronize their execution using `join` (`t1.join()` and `t2.join()`). The `join` function halts until a thread finishes execution.
+
+Although this method accelerates computation, it poses a challenge: where are the function's results? Attempting to retrieve the results from the thread object (`t1.results`) yields nothing because the function doesn't return any value directly. However, threads share memory, allowing them to modify the same object.
+
+Initiate a results dictionary and adjust the function to accept the results dictionary. Instead of returning a value, the function appends the result to the dictionary. Then, print the results.
+
+To streamline this process, encapsulate the thread creation and execution in a list. Create a list named `threads`, each item representing a thread initialized with `longSquare` as the target and iterating over a range of numbers. Start and join each thread in the list. Finally, print the results. This method significantly expedites computation compared to sequential execution.
+
+### Multiprocessing
+-------------------
+
+You might already be good at multi-processing in Python without even realizing it. Consider a file called `1000seconds.py` that simply calls `time.sleep` for a thousand seconds. If you open a second tab and run it there, you now have two instances of this program running separately, essentially two Python processes operating independently on your machine—this is multi-processing with Python.
+
+While you can run multiple Python processes manually by opening them in separate tabs, how can you automate the start, stop, and management of these processes? Fortunately, there's a module in Python specifically for this task, much like the `threading` module we used before. This module is called `multiprocessing`.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d6e4ff33-61ba-4760-8d7b-bcbc2ede5bdf)
+- Multiprocessing
+
+To work with multiprocessing in Python, start by importing `Process` from the `multiprocessing` module. However, there's a known issue with this module on some operating systems: if you define the function you want to run in the same file instead of importing it from the top (e.g., `import myFunction`), you may encounter problems. This can be a challenge in environments like Jupyter Notebooks, where you often define and run functions in the same place. 
+
+Fortunately, there's a third-party module called `multiprocess` that resolves this issue. You can install it with `pip install multiprocess`. This module functions similarly to `multiprocessing` but doesn't have the same limitations regarding function definitions. It can be used in the same way, so if you're following examples, you can use `multiprocess` without issue.
+
+When you create processes, the class works similarly to the `thread` class, allowing you to reuse much of the threading code with minor modifications. Instead of `threading.Thread`, use `Process`, and change any instance of `t1` and `t2` to `p1` and `p2`. This approach should work fine, but keep in mind that processes do not share memory like threads do. Each process has its own memory space, and they don't have direct access to shared data unless you use a shared data structure or a different communication method, like a file or a database.
+
+One workaround is to print the computed results from within the function itself, rather than returning or saving them. This approach may cause output alignment issues, especially when running multiple processes. For instance, if you print "Finished computing" from each process, you might see the results and the completion messages mixed together in unexpected ways, with odd newline behavior.
+
+To add multiple processes, use a list comprehension similar to the threading example. Create a list of `Process` objects and start each one, then wait for them to finish using `p.start()` and `p.join()`. When running 10 or more processes, the output might become jumbled or misaligned due to the asynchronous nature of processes printing at different times. This effect can create unexpected newlines or overlapping outputs.
+
+### Opening, Reading and Writing
+--------------------------------
+
+<i>Reading Files</i>
+
+Observing printed output on the screen is useful, but often, as programmers, we're expected to create something more substantial and tangible, typically for management or stakeholders who prefer physical files that they can attach to emails, open in Excel, or use in other ways. They might also provide you with files that they want your program to read and process.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/9ef3a4eb-96e0-4183-ab20-2335965ac9b2)
+- Reading files
+
+The first thing to understand about working with files in Python is that it isn't as straightforward as double-clicking an icon on your desktop. When working with files in Python, you're interacting more directly with the operating system, which requires managing some additional aspects, such as whether you're only reading a file or modifying it.
+
+This distinction is important because if two programs are trying to change the same file simultaneously, it can lead to conflicts and data corruption. The operating system needs to keep track of what each process is doing to avoid issues.
+
+To work with files, you can use the `open` function, which takes two arguments: the name of the file and a mode indicating whether you're reading or writing. For example, to open a file named `10_01_file.txt` for reading, you'd use `open("10_01_file.txt", "r")`.
+
+<i>Writing Files</i>
+
+To open a file in read mode, you can use the `open` function with the "r" argument for read access. When you print the file object, you simply get a representation of the file, but not its content. To read the content, one way is to use `readline()`, which reads a single line from the file each time you call it. This allows you to process the file's content line by line.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/09977ee5-cfe6-42de-9fb9-f18dbab166e0)
+- Writing files
+
+Each time you call `readline()`, the file object retrieves the next line, indicating that it maintains a sort of bookmark to keep track of which lines have already been read. 
+
+You could use a loop with `f.readline()` to read all lines one by one, but there's a simpler method: `readlines()`—with an "s" at the end—which fetches all unread lines at once and stores them in a list of strings. To print the file's contents nicely, you can use a loop with `readlines()`, like so:
+
+```python
+for line in f.readlines():
+    print(line)
+```
+
+However, you might notice that the lines are double-spaced because each line in the file ends with a newline character, and the `print` function adds another newline by default. To avoid this, you can use `strip()` to remove leading and trailing white spaces, including newline characters, from each line. Applying `strip()` to each line results in cleaner output without unwanted extra spacing.
+
+<i>Appending Files</i>
+
+Now, let's talk about writing to files. To create a new file or overwrite an existing one, use "w" for write mode instead of "r" for read mode. This time, let's create a new file called `output.txt`, which doesn't exist yet. When we run this code, Python will automatically create the file for us, which is a handy feature.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d6425f36-7f2a-451f-8b62-e2a13e70c16e)
+- Appending files
+
+When you create a file, you can write to it using the `write` function. For example, you could write `line 1` and `line 2` using `f.write`. After running this code, you might find that the output file appears empty, even though you just wrote to it. Why does this happen?
+
+Writing to files can be resource-intensive, so Python uses a buffering system to optimize performance. When you write to a file, Python stores the data in a buffer, only committing it to the file when the buffer is full or when you close the file. If you don't close the file, the data might not be written to disk.
+
+To ensure your data is saved, you must close the file using `f.close()`. Once you close and reopen the file, you'll find your written lines. However, notice that there's no automatic newline between lines, so they appear continuous. To fix this, you need to add newline characters (`\n`) manually when writing to the file. By adding the newline characters, the output file will contain the expected line breaks when you open it.
+
+### CSV
+-------
+
+<i>Reading</i>
+
+Let's explore the CSV module in Python. You don't need to install any additional packages, as the CSV module is included with Python. Just import it at the beginning of your code with `import csv`, and you're ready to work with CSV files.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/2fd452e9-8eee-4785-b90f-37e6c805f9fb)
+- Reading
+
+The CSV file we'll be working with is called `10_02_us.csv`, derived from geonames.org, which provides large datasets containing place names and geographical information. This specific dataset contains every zip code in the US, along with corresponding city or town names and their latitude and longitude.
+
+To open the file, use `open("10_02_us.csv", "r")` for read mode, then create a CSV reader with `csv.reader(file)`. This reader object is not a list but behaves like an iterable. You can loop through it with `for row in reader: print(row)` to print all rows.
+
+However, you may notice that the data doesn't parse correctly. This is because the CSV file doesn't use commas as delimiters; it uses tabs. To fix this, specify the delimiter with `delimiter='\t'`. Once set, the output should display the data in a tab-separated format, splitting values correctly.
+
+The first row in the file is typically the header. If you want to skip it, use `next(reader)` to move past it, essentially setting an internal pointer to the next data row. Alternatively, you can convert the reader to a list with `list(reader)`, then use list slicing to skip the header.
+
+For a more convenient approach to handling CSV data, consider `csv.DictReader`. This variant uses the first row as field names (keys), creating a list of dictionaries where each dictionary represents a row with keys derived from the header. This method is useful if you want to work with CSV data as a collection of named fields rather than plain row data.
+
+<i>Filtering Data</i>
+
+Let's convert from a reader object to a list object. Let's just call it data. Now we have data that we can work with. 
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/0621fd7f-c983-4817-8def-ede71af4415d)
+- Filtering data
+
+You're on the lookout for prime real estate, focusing on postal codes that are prime numbers (numbers only divisible by 1 and themselves). To achieve this, you can reuse a previous code snippet that generates all prime numbers between 2 and 99,999.
+
+Keep in mind that postal codes can start with a zero, like "02155" (Medford, Massachusetts). When converting such postal codes to integers, leading zeros are dropped, so "02155" becomes 2155, which is divisible by 5 and therefore not a prime number.
+
+To find prime postal codes, filter the data to include only rows where the integer value of the postal code is in the list of prime numbers. Here's how to do it:
+
+```python
+# Example code to find prime postal codes in Massachusetts
+primes = set(previously_generated_primes)  # Assuming you've already generated the list of prime numbers
+filtered_data = [row for row in data if int(row['postal code']) in primes and row['state code'] == 'MA']
+```
+
+Next, restrict the results to only those in Massachusetts (`state code` equals `'MA'`). To get the number of these prime locations in Massachusetts, you can use `len(filtered_data)`. Finally, you can print the length of `filtered_data` to get the count of prime real estate in Massachusetts.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/5f9f59ec-0a78-4205-9ed6-7cca16a169b6)
+- Writing
+
+### JSON
+--------
+
+<i>Loading JSON</i>
+
+In the past, we discussed reading and writing files to and from disk. JSON files, which typically have a `.json` extension, are quite common, and you might work with them often. However, for now, let's focus primarily on JSON strings, which are representations of data in JSON format within a text string. These JSON strings are foundational for data interchange in many applications, including web development and APIs.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/83475c69-483f-4f97-8d34-ea8be6cbde8f)
+- Loading JSON
+
+Let's create a JSON string with keys `a`, `b`, and `c`, representing "apple," "bear," and "cat." This JSON-formatted string resembles a Python dictionary but remember, it's not actually a dictionary—it's a string. Even experienced programmers can get confused by this, forgetting that JSON strings and Python dictionaries, though similar, are different data types.
+
+To convert this JSON string into a Python dictionary, you must first import the JSON module at the top of your notebook: `import json`. Then, use the `json.loads()` method, passing in the JSON string to parse it into a Python dictionary. Note that it's `loads()` (plural), not `load()` (singular), which is a common error.
+
+Once you have the Python dictionary, you can manipulate it as usual, including adding a trailing comma without issues. However, in a JSON string, trailing commas can cause a `JSONDecodeError`. If you're working with potentially unreliable JSON data, it's a good idea to wrap the `json.loads()` call in a `try...except` block to handle this error gracefully. To catch this specific error, import it separately from the JSON module: `from json import JSONDecodeError`.
+
+Now that we've covered reading JSON, let's consider the reverse: converting a Python dictionary into a JSON-formatted string. This is often referred to as "dumping" a dictionary into a JSON string, typically using the `json.dumps()` method.
+
+<i>Dumping JSON</i>
+
+For this, use the json.dumps method. Here is pythonDict, you are going to use json.dumps pythonDict.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/976c2cb0-5f0d-45f5-bfa6-5df3819a7b34)
+- Dumping JSON
+
+The method for converting a Python dictionary into a JSON string is `json.dumps()`. Note that it's "dumps" with an "s" at the end. Typically, you wouldn't add exception handling when using this method because if you have a valid Python dictionary, there's not much that could go wrong when converting it to a JSON string. However, there's one situation where an exception could occur.
+
+<i>Custom JSON Decoders</i>
+
+Let's illustrate a potential exception scenario with `json.dumps()` by creating a simple `Animal` class:
+
+```python
+class Animal:
+    def __init__(self, name):
+        self.name = name
+```
+
+Now, if you have a dictionary that includes an instance of the `Animal` class, trying to convert it into a JSON string with `json.dumps()` might raise an exception. This is because JSON serialization works with basic data types like strings, numbers, and lists, but doesn't inherently support custom class instances. Thus, when working with dictionaries that contain custom objects, extra care or additional handling is required.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/2b421457-95d8-4609-ab0c-5f4ebfdd88b7)
+- Custom JSON decoders
+
+Clearly, an apple isn't an animal, so let's change it to "aardvark." Update the dictionary to use `Animal` objects for "bear" and "cat" as well. When you attempt to convert this modified dictionary to a JSON string using `json.dumps()`, you'll encounter a `TypeError` saying "Object of type Animal is not JSON serializable."
+
+This error occurs because the JSON module doesn't know how to convert an `Animal` object to a JSON-compatible format. To fix this, you can create a custom JSON encoder that knows how to handle `Animal` instances.
+
+First, import `JSONEncoder` from the `json` module. Then, create a new class `AnimalEncoder` that extends `JSONEncoder`. In this class, override the `default` method to define how custom objects should be converted to JSON.
+
+Here's an example of how to create an `AnimalEncoder`:
+
+```python
+from json import JSONEncoder
+
+class AnimalEncoder(JSONEncoder):
+    def default(self, o):
+        # 'o' represents the object being converted to JSON
+        # Define how to handle the Animal class or any other custom class
+```
+
+This setup allows you to customize the behavior of JSON serialization for specific object types like `Animal`.
