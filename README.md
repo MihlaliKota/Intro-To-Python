@@ -900,3 +900,121 @@ class AnimalEncoder(JSONEncoder):
 ```
 
 This setup allows you to customize the behavior of JSON serialization for specific object types like `Animal`.
+
+## Python 103: Intermediate Python
+
+### Finding Inspiration
+-----------------------
+
+When you're starting a new programming project for fun or practice, the first challenge is figuring out what the program should do. While this question might seem straightforward, it can be quite daunting due to its open-ended nature. This is similar to an aspiring author who decides to write a novel, only to find themselves staring at a blank page, struggling to find a starting point and determine the storyline. To overcome this kind of creative block, it's helpful to seek inspiration from various sources, and that's exactly what we'll provide to help spark ideas for your next Python project.
+
+Let's start by exploring your hobbies, aside from coding in Python, of course. Consider, for example, if you love attending concerts. Wouldn't it be great to have a Python script that tracks your favorite bands' upcoming shows so you can grab tickets early? Or maybe you're passionate about photography and end up with thousands of photos each month. Could Python scripts help you organize your vast collection just the way you want?
+
+Your workplace can also be a source of project inspiration. Are there tasks at work that could use automation? Do you and your colleagues spend hours manually transferring data into spreadsheets or generating reports? You could be the office hero by writing a Python script to automate these tedious processes.
+
+Similarly, think about your daily routine at home. Are there tasks that could be made easier with some automation? 
+
+For example, every morning, when I wake up, my first instinct is to grab my phone and start swiping through various apps and websites. I do this to check the weather, catch up on news, and more. Recently, I thought about making this routine more efficient with some automation. That's when I came up with the idea of building a Python application that sends me a daily email digest, compiling all the information I need in one place. This concept will serve as a guiding example throughout this course.
+
+As you go through your day, keep a list of any new project ideas that come to mind. This way, you'll always have a collection of intriguing concepts ready to explore when you're seeking your next Python project.
+
+### User Stories
+----------------
+
+With a general idea for the next Python project—a daily email digest generator—I can now start planning by focusing on user stories. User stories describe specific scenarios from the user's perspective and should highlight the user's goals and motivations rather than the technical details of the application. They are short, simple, and informal, ideal for jotting down on index cards. A typical user story follows this structure: "As a [user/role], I want [goal] so that [reason/benefit]."
+
+For example, a user story for this project could be: "As a digest recipient, I want to receive an email every morning with current and useful information so that I know what's going on in the world and learn something new each day."
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/06980b55-8abe-45d0-aa3d-d3074666e1ef)
+- Illustration of the 3 core elements of a user story
+
+To further outline your project, you can write additional user stories. For example, "As a digest recipient, I want to read an inspirational quote to have something positive to reflect on throughout my day," or "As a digest recipient, I want to know the weather forecast to plan my outfit accordingly." It's important not to overload your application with too many features from the beginning. Keep the initial scope manageable, while you can maintain a backlog for other feature ideas to implement later. Alongside user stories for digest recipients, you might consider stories for other roles, like content curators or administrators.
+
+When creating user stories, focus on the user's goals and motivations, avoiding detailed descriptions of interfaces or implementation methods. Before moving forward with this course, take some time to write a set of user stories for your Python project. This exercise will help guide your development process and keep you user-focused.
+
+### Use Cases
+-------------
+
+In addition to user stories, another helpful planning tool for applications is the use case. A use case typically consists of a title, an actor (such as a user or system), and a scenario that describes how a particular goal is achieved. The scenario can be presented as a paragraph or a list of steps in straightforward language.
+
+For example, a use case might involve a digest recipient exploring tweets on a specific Twitter trend. The use case scenario could describe how the recipient opens the email, clicks on the trend link, and navigates to the relevant Twitter page to view the trend. Use cases offer a clear narrative of how a user interacts with an application to accomplish a specific task.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/18ab5320-95e6-4cec-87e2-6a05b97d4be0)
+- 3 core elements of a use case
+
+Although user stories and use cases might seem alike, they each focus on different aspects of project planning. User stories capture the "who," "what," and "why" of a task or goal, emphasizing the user's perspective and the reason behind a particular need. Use cases, on the other hand, focus on the "who," "what," and "how," providing a step-by-step scenario of how a goal is achieved.
+
+These tools are complementary, not competitive. Depending on the complexity of your project, you might use just user stories or combine them with use cases. It's all about finding the approach that best suits your working style and helps you effectively organize your ideas.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/f85b2cc0-ffdf-4fa9-99d7-be9b58a24f05)
+- User Story vs Use Case
+
+### Project Requirements
+------------------------
+
+In addition to user stories and use cases, writing traditional requirements is useful for formally capturing an application's expected capabilities and limitations. Functional requirements specify what the application should or shouldn't do and are typically written as sentences that start with "the application must" or "the application shall."
+
+For example, in a daily digest application, a functional requirement might state: "The application must generate a random inspirational quote," or "The application shall retrieve current weather forecasts, Twitter trends, and a random Wikipedia article." Additionally, it should format this content into an email and send it to a specified recipient list. These requirements act as a checklist to ensure the application meets all essential functions.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/632d9a14-3c53-4d17-90a9-1ef5c25f72e6)
+- Project requirements
+
+These requirements are kept at a high level, avoiding specific details like forecast duration or temperature units. For personal projects, this general level of detail is usually sufficient, with specifics determined during implementation. Additional functional requirements could include admin-related tasks like configuring content sources, adding or removing recipients, scheduling the email digest, and setting email account credentials.
+
+Besides functional requirements, non-functional requirements describe how the application should perform its tasks. They focus on qualities such as maintainability, reliability, and usability. For instance, non-functional requirements might state that the application should have a configurable GUI for the admin, be extensible to add more content types, and be robust enough to handle content-related errors.
+
+With these requirements in place, the first iteration of the application can begin. This is a good moment for those following along with their own Python project to pause and write their own sets of functional and non-functional requirements before moving on. This helps establish a clear framework for building out the project's first iteration.
+
+### Architecture
+----------------
+
+With the requirements outlined, it's time to organize and structure the application's code. Since Python supports object-oriented programming, it's crucial to consider objects and classes. To find potential objects, look at the requirements, use cases, and user stories, then identify significant nouns.
+
+For example, in the functional requirements, nouns like "quote," "forecast," "location," "trends," "article," "content," "email," and "recipients" suggest possible objects or classes for the application. This analysis provides a foundation for the program's design, helping you create a structure that aligns with the application's goals.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/dc82eed4-f74b-43aa-8190-0f87b624f710)
+- Determining potential classes
+
+By grouping related nouns together, like "content" and "email," you can identify potential classes for the application. For example, "content," "email," and "GUI" could be distinct classes based on their roles in the project. 
+
+To determine the behaviors and responsibilities for these classes, extract simplified verb phrases from the requirements. For instance, phrases like "generating quotes," "retrieving forecasts," "formatting content," and "sending emails" suggest various behaviors the application should support.
+
+Assign these behaviors to the relevant classes. The `Content` class might handle generating and retrieving content, the `Email` class could be responsible for formatting and sending emails, and the `GUI` class might manage configuration-related tasks. This process provides an initial structure for the codebase, helping you draft method names and organize the application's responsibilities.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/c536e2df-d5d1-4f65-a8ab-c51962158689)
+- Draft classes and methods
+
+Some aspects still require clarification, such as where to store the list of digest recipients. The `send_time` attribute, for example, should be part of the `Email` class. While team projects require a detailed plan, solo developers or smaller projects can start with a simpler structure, such as focusing on three primary classes.
+
+This initial plan is enough to start coding, even if it lacks comprehensive details. As you implement the project, you might need to make adjustments and refine your design. It's natural for plans to change as the project develops, so be prepared for some flexibility.
+
+### Stub Code
+-------------
+
+With the basic design structure in mind, it's time to start coding. To set up the foundation for the project, create three Python modules: `dd_content.py`, `dd_email.py`, and `dd_gui.py`. These modules will contain the skeleton code for the different parts of the application.
+
+The `dd_email.py` module, for instance, serves as a placeholder for the daily digest email class. It contains method stubs with the `pass` statement, allowing the script to run without errors, despite not having any meaningful functionality yet. This approach helps you establish the module's structure while you work on its implementation.
+
+At the bottom of the script, you can include an `if __name__ == "__main__"` block to add test code related to the email class. This block lets you test the module as a standalone script while ensuring it doesn't execute when imported into other modules.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/dc0cebb6-5b04-46f9-b20c-6835e2fed101)
+- Email stub code
+
+In the `dd_content.py` module, a similar `if __name__ == "__main__"` block is included for test code. However, unlike the `dd_email.py` module, which contains a specific class for the daily digest email, the `dd_content.py` module doesn't define a dedicated class for daily digest content. After careful consideration, it was determined that using separate functions to retrieve random quotes, weather forecasts, Twitter trends, and Wikipedia articles would be more flexible.
+
+These individual functions are included in the `dd_content.py` module, allowing for easy expansion with additional content sources later on. This modular approach provides flexibility for future updates and enhancements.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/497debbf-e85a-4425-b87d-04805008e933)
+- Content stub code
+
+The `dd_gui.py` module manages the graphical user interface (GUI) for the email digest administrator, utilizing the Tkinter module. The necessary import statements for Tkinter are included, and the `if __name__ == "__main__"` block contains standard code to create and run the GUI when the module is executed as the main script.
+
+Instead of including stub code, the `dd_gui.py` module contains comments that outline the desired functionality of the GUI. These comments serve as reminders and guidance for future development, acknowledging that designing a graphical user interface is a separate process that requires careful planning and design.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/8e893062-340e-408f-891d-801884741384)
+- guiStub code
+
+Overall, the stub code provides the structure for implementation, allowing for separate development of the email class, independent content functions, and the GUI.
+
+
+
