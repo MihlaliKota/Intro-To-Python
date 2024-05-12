@@ -1094,3 +1094,26 @@ While developing the `dd_content` module, I needed a way to fetch current Twitte
 ![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/251b034a-f11a-4690-ab08-b7f357874160)
 - Twitter Developer Portal
 
+I began by searching for a suitable Python library on pypi.org, a platform for Python packages, using the keyword "Twitter." The first library I found was named "Twitter," which appeared promising given its recent update.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/22337363-3d0e-4c7c-ac47-18de12c2b0a6)
+- Twitter Python Library
+
+With over 3,000 Python projects related to Twitter listed on PyPI, sifting through them and their documentation would have been a time-consuming task. Instead, a shift in approach led to utilizing Google for finding solutions. A search for "Python Twitter trends" yielded various blog posts and tutorials where similar problems had been addressed.
+
+It's worth emphasizing that using Google or similar resources to learn is not considered cheating. This misconception is common among beginner programmers, but even experienced developers rely on search engines. In fact, a recent survey revealed that nearly 90% of developers turn to Google when they encounter challenges. Given the vastness of the programming field, no single individual can know everything. Therefore, embracing knowledge sharing and collectively improving our skills is essential.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/dfcdcd97-3ac3-4004-8d7b-3e92c7efbf05)
+- Tweepy Python library
+
+Tweepy, a frequently updated Python library, was discovered as a suitable tool for the project, thanks to its documentation showcasing the "trends_place" API method. This method allows retrieval of current trends based on a location's WOEID (Where On Earth Identifier).
+
+To utilize Tweepy, start by installing it on your system with "pip install tweepy." Then, in your code, import the Tweepy module and define a function named "get_twitter_trends," optionally taking a WOEID value parameter. Like previous functions, enclose the code within a try block to handle potential errors. Ensure to provide the Twitter API key and secret key for authentication. Line 55 utilizes the "trends_place" method from Tweepy's API class to fetch current trends for the specified WOEID, returning them as a list of dictionaries, each containing trend information.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/3218b523-fa12-4fdf-906a-1a808eb502dd)
+- Tweepy project implementation
+
+Three test cases were devised to validate the "get_twitter_trends" function. The initial case invoked the function without arguments, fetching and displaying trends for the default region, the United States. The subsequent case provided a WOEID corresponding to London, printing the current trends for that area. Finally, an invalid WOEID was supplied, causing an exception and the function returning None.
+
+Upon executing the DD content module in a terminal, the output showcased the top Twitter trends for the United States, succeeded by the trends for London. As anticipated, an error message surfaced for the invalid WOEID case, as the function couldn't fetch trends for that location.
+
