@@ -1116,4 +1116,3 @@ To utilize Tweepy, start by installing it on your system with "pip install tweep
 Three test cases were devised to validate the "get_twitter_trends" function. The initial case invoked the function without arguments, fetching and displaying trends for the default region, the United States. The subsequent case provided a WOEID corresponding to London, printing the current trends for that area. Finally, an invalid WOEID was supplied, causing an exception and the function returning None.
 
 Upon executing the DD content module in a terminal, the output showcased the top Twitter trends for the United States, succeeded by the trends for London. As anticipated, an error message surfaced for the invalid WOEID case, as the function couldn't fetch trends for that location.
-
