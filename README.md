@@ -1,4 +1,4 @@
-# Intro-To-Python
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/6442219e-2a63-4b64-9742-3f41f11c3cbe)# Intro-To-Python
 
 ## Python 101: Introduction to Python
 
@@ -1116,3 +1116,118 @@ To utilize Tweepy, start by installing it on your system with "pip install tweep
 Three test cases were devised to validate the "get_twitter_trends" function. The initial case invoked the function without arguments, fetching and displaying trends for the default region, the United States. The subsequent case provided a WOEID corresponding to London, printing the current trends for that area. Finally, an invalid WOEID was supplied, causing an exception and the function returning None.
 
 Upon executing the DD content module in a terminal, the output showcased the top Twitter trends for the United States, succeeded by the trends for London. As anticipated, an error message surfaced for the invalid WOEID case, as the function couldn't fetch trends for that location.
+
+
+### Importing Articles
+----------------------
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/eeff449d-1af9-497d-bcdd-e639f77c57c9)
+- Wikipedia article code content
+
+To implement the fourth content retrieval function, the goal was to fetch a random Wikipedia article. This required checking if Wikipedia provides an API for this purpose. A Google search for Wikipedia API documentation revealed that Wikipedia offers a REST API that allows access to their content, making it convenient to fulfill this requirement.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/432f4ac9-96de-466f-a741-dbe64dMessages68b0f3)
+- Wikipedia REST API
+
+Upon exploring the page content section of the Wikipedia API documentation, a description for retrieving random page content was found. This met the requirement perfectly. The next steps involved clicking the "get" button, followed by the "try it out" button. From the dropdown menu, the desired return format could be selected. Options included obtaining a random page title, the full page HTML, or a summary of key points. Since including an entire Wikipedia article in the digest email was unnecessary, the summary option was chosen. After making the selection, the "execute" button was clicked.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/587e2f76-4ce4-4043-96ba-426009f9d5a4)
+- Wikipedia REST API get_content
+
+The request URL field shows the URL for retrieving a random Wikipedia summary. Below it, there's an example of the JSON response body, which includes fields like page title, thumbnail images, the full page URL, and an "extract" field at the bottom containing the article summary in a few sentences. Since the response is in JSON format, the code to retrieve and parse the Wikipedia article will be similar to the implementation of the weather forecast function. Let's look at the implementation.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/a872dc4d-78da-430b-b56f-35bd3ad497c3)
+- Wikipedia REST API get_content 
+
+The updated function to get a Wikipedia article uses the `request` module's `urlopen` function on line 65 to access the URL for a random page summary. The response is then parsed using the JSON module's `load` function. The necessary information—page title, summary extract, and URL—is extracted and packaged into a dictionary, which is returned. This function is the simplest among the four content functions. At the end of the script, a test case is added to call the `get_wikipedia_article` function, retrieving a random page and printing its title, URL, and extract.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/de1a1f4c-1ac2-4f7c-98ec-03bb6ca08719)
+- Wikipedia article code executed
+
+### Writing and Formatting Email Messages
+-----------------------------------------
+
+Now that the application can retrieve different types of content, let's shift our focus to the email section, which will be implemented in the `dd_email.py` module. The stubbed methods for the Daily Digest email class are already available. If you want some extra programming practice, you can pause and try implementing these methods yourself before checking the suggested approach.
+
+Before we can send an email, we need content to send. Therefore, the next method we'll tackle is `format_message`. Initially, the class requirements included a method called `format_message` to compile various content into the email's body. However, the specifics of email message formatting were unclear. To resolve this, a search was conducted on how to format an email message with Python.
+
+It turns out there are multiple ways to format an email, including plaintext and HTML. Python's `MIMEMultipart` class even allows us to include both formats in a single email message, which will be covered in the next section. Notably, HTML is the more commonly used format for emails today.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/a4170b34-5ce1-47a6-a590-b9a5616f8686)
+- MIMEMultipart
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ad08598b-5bc3-4fbc-b706-07f8525fc816)
+- dd_email.py final code
+
+To ensure the Daily Digest email includes both Plaintext and HTML versions, the `format_message` method generates both types of content. Here's how the daily digest email class is implemented:
+
+1. **Initialization**:
+   - In the `__init__` constructor method, an instance variable is initialized as a dictionary to store the four types of content, each with a Boolean flag indicating if it should be included.
+   - The latest content is retrieved using functions from the DD content module.
+
+2. **Formatting Plaintext Content**:
+   - Starting at line 18, the `format_message` method formats the Plaintext version of the message.
+   - The `text` variable is set as a formatted string with a header that includes the current date, along with stylistic elements like asterisks and tildes to make the Plaintext section header stand out.
+   - From lines 25 to 46, the method checks if each content type should be included and adds the section headers and formatted text accordingly.
+   - The weather forecast section uses a for-loop to format and add lines for each forecast period, while the Twitter section includes the top 10 trends using a similar approach.
+   - These sections are combined to build the `text` variable into a single string representing the entire Plaintext message.
+
+3. **Generating HTML Content**:
+   - A similar process is followed for generating HTML content.
+   - HTML strings are concatenated to the `html` variable (starting at line 51), using HTML tags and angle brackets to define the display format like a webpage.
+   - IF statements (starting at line 58) determine whether each content type should be included.
+   - The "Quote of the Day" section includes a header, quote, and author.
+   - The weather forecast section uses a for-loop to create an HTML table displaying all forecast elements.
+   - The Twitter trends and Wikipedia article sections have their own HTML formatting.
+
+4. **Finalizing the Message**:
+   - An HTML footer is added towards the end of the `format_message` function.
+   - The `text` and `html` message are returned as a dictionary (line 120).
+
+5. **Testing**:
+   - The test code generates a new message, prints the Plaintext and HTML content to the console, and saves them in text and HTML files for further inspection.
+
+This method ensures that the Daily Digest email includes well-formatted Plaintext and HTML versions, catering to different email clients and preferences.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/e1ee18ad-eaeb-4f84-a74c-c74bfb466ce1)
+- message_html.html output in browser
+
+The script is executed in a terminal, and after reviewing the output, the HTML and Plaintext versions of the message are displayed. A message text file is created in the directory, which can be opened to view the Plaintext content, with section headers highlighted using simple ASCII art.
+
+To view the full HTML content, open the HTML file in a web browser. This can be done by right-clicking the file, selecting "reveal in File Explorer," and double-clicking the file in the Explorer window. The browser will display the formatted content, including an italicized "Quote of the Day," organized forecast data in an invisible table, and clickable hyperlinks for Twitter trends. Although the webpage may not be visually impressive due to basic HTML skills, it effectively presents the necessary information.
+
+### Sending an Email
+--------------------
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/e42caae8-da5e-4dea-9cd5-e2f598fb29a3)
+- Send_email function code
+
+The next step, after formatting the daily digest content, is to send it as an email. Python provides a convenient library called 'email' in its standard package, which simplifies managing email messages. For this project, the focus will be on the 'email.message' module to handle the email message itself.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/52231727-a3cb-4cb2-923d-88935f5729a3)
+- Python standard library email packages
+
+The core component of the 'email.message' module is the "EmailMessage" class, which is used to assemble various parts of the daily digest email, such as the subject line, recipient list, and message content. However, while the 'email' package aids in handling email messages, it does not handle the actual sending of emails.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ae5f4546-8c51-434c-a4a9-cfbf02b09ef7)
+- Python standard library email messaging package
+
+In other Python modules like `smtplib`, you can find the functionality needed to send emails. This module allows you to create a client session to send emails through an SMTP server. Setting up and running your own email server locally can be complicated, so it's not recommended. Fortunately, many online email services offer SMTP servers that you can use with external email clients and applications. Due to Google's security policy changes around May 2022, which no longer allow sign-ins programmatically with just a username and password, Gmail is no longer a viable option for this solution. Instead, using an Outlook email address is recommended.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/6f88723b-ddbc-40e7-b5de-823ac55e3c6a)
+- Outlook SMTP / POP settings config
+
+According to Microsoft's support page, there's this handy documentation that gives you the server name, port, and encryption method for connecting to the Outlook SMTP server.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/20d5ac80-b1c5-40f9-b6af-a2497ca4062d)
+- Email function code view
+
+Let's see how the `send_email` function works. First, we import two new modules: `smtplib` for connecting to the Outlook server and the `EmailMessage` class from the `email.message` module. Additionally, changes were made to the `__init__` method for the Daily Digest email class, adding instance variables and initializing a list of recipient email addresses with two addresses for testing purposes. A dictionary was also created to store the sender's email address and account password.
+
+The `send_email` function starts by creating a new `EmailMessage` object. Various fields are set, such as the subject line, sender email address, and recipient addresses. The `format_message` method is used to generate the message body. The email is configured to use plain text with the `set_content` method, and the HTML version of the content is included using the `add_alternative` method, making the message a multi-part container with both plain text and HTML parts.
+
+The `send_email` method then establishes a secure connection to the SMTP server using TLS encryption. After logging in with the sender's credentials, the `send_message` method is called to send the email.
+
+To test the code, a call to the `send_email` method is added at the end of the script. Running the script sends the email. Checking the inbox of one of the recipients reveals a new message with the subject "Daily Digest" and today's date. Opening the email shows the HTML formatted content, including the quote of the day, weather forecast, Twitter trends, and a Wikipedia summary. While the email client only shows the HTML version, the plain text version can be accessed by viewing the message source.
+
+By including both plain text and HTML versions, the Daily Digest email becomes compatible with a wider range of email clients and settings.
