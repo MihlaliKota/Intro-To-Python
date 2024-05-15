@@ -1,4 +1,4 @@
-![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/6442219e-2a63-4b64-9742-3f41f11c3cbe)# Intro-To-Python
+# Intro-To-Python
 
 ## Python 101: Introduction to Python
 
