@@ -1231,3 +1231,183 @@ The `send_email` method then establishes a secure connection to the SMTP server 
 To test the code, a call to the `send_email` method is added at the end of the script. Running the script sends the email. Checking the inbox of one of the recipients reveals a new message with the subject "Daily Digest" and today's date. Opening the email shows the HTML formatted content, including the quote of the day, weather forecast, Twitter trends, and a Wikipedia summary. While the email client only shows the HTML version, the plain text version can be accessed by viewing the message source.
 
 By including both plain text and HTML versions, the Daily Digest email becomes compatible with a wider range of email clients and settings.
+
+### Task Scheduling
+-------------------
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/d9626da7-86fd-47cf-ba80-46bc0f68db52)
+- Function design view
+
+Reflecting on the earlier blueprint for a daily digest email class, considerable progress has been made. Both the format message and send email methods have been effectively developed. However, unexpected instance variables, like the recipient email address list, have been added along the way. This leaves one final task: enabling the daily digest to be sent at a specific time each day.
+
+To address this, introduce a method named schedule time within the GUI. The intention is for the administrator to utilize the GUI to designate the desired sending time for the email. Subsequently, this designated time is conveyed to the email object, which assumes the responsibility of dispatching the email at the scheduled time.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/3ebdcc4b-217f-4629-bae0-f22c3b58bcd7)
+- Python library site for scheduling
+
+To facilitate scheduling the daily email dispatch in the application, the "schedule" library was selected from the Python package index due to its user-friendly interface for scheduling tasks to recur at specific intervals or times of day. This appeared to align well with the project's requirements. Yet, upon examining the documentation, a constraint with this schedule library was identified, necessitating the exploration of a solution.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/5b63cacd-2d67-433c-a1f1-70f83ecff0a2)
+- Python library function implementation example
+
+The scheduler, by default, does not support background operation. This means that if a task is scheduled for a future email send, the program will remain inactive until the task is done, rendering the main thread unresponsive. This would hinder the administrator's ability to interact with the program, reminiscent of frustrating frozen user interfaces. Such a scenario is undesirable for the program's functionality.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/b80266ae-2437-46d4-8e9c-0d5140b1449a)
+- UML illustration of GUI function
+
+A workaround for enabling the scheduler to run independently as a separate thread can be found in the documentation. It involves defining a class named "ScheduleThread" that inherits Python's thread class to handle scheduling activities apart from the main thread. While the documentation's example locally defines the class within a function named "runContinuously," it's recommended to define classes separately for better reusability.
+
+In the implementation, a new class named "Scheduler" is created. It incorporates the scheduled time method from the GUI class and the send time field from the email class. By inheriting from Python's threading module's thread class, the scheduler can operate independently of the main thread. When it's time to send another email digest, the scheduler invokes the email class's send email method, while the GUI utilizes the scheduler's scheduled time method to determine the send time.
+
+Though not a formal or exhaustive UML diagram, the intention and essential concept are effectively conveyed. It's important to acknowledge a significant change made to the original plan, which is perfectly acceptable. The initial plan serves as a starting point to initiate work and make progress. However, as experience is gained and new insights are obtained, it's vital to remain adaptable and adjust the original plan accordingly.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/66e4ca5e-9a91-493f-96ab-9f15cf0fe479)
+- Program design iteration process
+
+Encountering unexpected challenges is common in any project, as emphasized throughout this course. While communication and sharing insights are essential in team settings, since you're working solo on this project, it's important to internally justify the decision to implement the proposed change. This involves recognizing that adapting to unforeseen challenges is a prudent approach, even when working independently.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/cc4d7a28-f9a4-4785-b2d5-3843fda772c0)
+- Schedule module implementation
+
+Let's delve into the actual implementation details. A new Python module named "dd_schedule" was established to house the daily digest scheduler class. This class inherits from the thread class within the threading module. Within the constructor method, the super function is utilized to invoke the initialization method of the thread class. Additionally, a threading event object is instantiated to serve as an internal indicator, signaling when the thread should cease execution.
+
+A method for scheduling tasks has been introduced and renamed from "schedule send" to "schedule daily" to enhance clarity. The clear function from the schedule module is employed to eliminate any previously scheduled tasks. Subsequently, the schedule API is utilized to schedule the specified function to run daily at the designated time. Interestingly, the send time is not stored as an instance variable within the class, as originally intended. Instead, it is passed to the schedule API, which handles its storage and usage. This reflects a modification made during the implementation phase.
+
+Moving forward, the run method employs a while loop to continuously execute any pending scheduled tasks until the stop running flag is activated. Below this, the stop method is defined, which can be called to set the flag and halt execution.
+
+In summary, the implementation entails creating a new module and class for the daily digest scheduler. Task scheduling is managed using the schedule API, with the flexibility to clear and reschedule tasks as required. The run method ensures ongoing execution of pending tasks until the stop flag is triggered.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/a7a366cb-c6a9-4b74-9b86-164846beb8ad)
+- Schedule module implementation
+
+Now, onto the testing phase. First, import and instantiate a daily digest email object, which provides access to its send email method. Then, instantiate a new scheduler object on line 39, and initiate its operation as a separate thread by calling the start method inherited from the thread class on line 40. The subsequent four lines fetch the current system time and schedule a test email to be sent one minute into the future. Line 47 ensures the program's activity by pausing the main thread for 60 seconds while the scheduler awaits the email sending. Finally, the stop method is invoked to terminate all operations.
+
+To execute this DD scheduler script for testing, open a terminal and run it. Observe that it schedules a test email to be dispatched at 11:20. Upon reaching the designated time, check the email client to confirm the receipt of a new daily digest. This demonstrates the functionality of the new scheduler class. While it was noted that the scheduler needed to run as a separate thread, detailed explanations on why and how were omitted.
+
+### GUI Design Planning
+----------------------- 
+
+With the completion of the content generation functions, the email class for formatting and sending the daily digest, and the scheduler, most of the functional requirements have been fulfilled. These modules form the core components of the application. However, there's also a non-functional requirement to develop a graphical user interface (GUI) for the admin's convenience. Typically, GUI development is deferred until later stages of a project. This approach ensures that the application's foundational functionality is established before investing effort in creating an aesthetically pleasing GUI, which would be ineffective without the underlying functionality.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/9a7987bc-03b7-4c11-9e79-2675bdfb8221)
+- GUI module design
+
+In this session, we'll explore how to construct a graphical user interface (GUI) using Python's Tkinter module. While we won't delve into advanced UX design principles, we'll focus on achieving functionality. 
+
+When planning your GUI, simplicity is key. You can sketch ideas on paper or experiment with shapes in tools like PowerPoint. While there are more sophisticated UX design tools available, these basic methods suffice.
+
+Now, let's consider the purpose of our GUI. It's intended to provide the admin with control over the daily digest application. To determine its features, we'll refer back to the requirements list to identify the admin's needs.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/723737ea-a74a-469e-8737-fcafcac4addb)
+- GUI design structure
+
+The aim of this GUI is to empower users to tailor their digest email according to their preferences. This involves selecting content sources, managing recipients, scheduling sending times, and configuring sender credentials. To initiate the GUI design process, it's helpful to break it down into smaller components rather than tackling the entire task at once, which can be overwhelming. 
+
+Visualize each task as an individual box and organize the elements within them. Subsequently, these boxes can be reorganized as subsections to construct the overall layout of the GUI. This approach simplifies the process and prevents getting stuck with a blank canvas.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/fd54f392-052e-4e5b-bbdd-68ee1723de40)
+- GUI design structure
+
+The decision was made to merge the components for adding and removing recipients since they appeared to be interconnected tasks within the graphical user interface (GUI). This consolidation was based on the anticipation of interaction between their GUI elements. With this resolved, attention can now be directed towards populating these components, starting with configuring the email content.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/50169c0e-54e1-4c22-85e2-cf1ef9f2fec4)
+- Digest content UI design
+
+Given that selecting content types involves binary choices—enabling or disabling each option—utilizing check buttons was deemed the most appropriate approach. Additionally, to enhance clarity and organization, a section header was included to clearly indicate the relevance of these check buttons.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ba6e68c8-7b94-48d8-9509-73617de3a7c3)
+- Recipient UI design
+
+In handling the recipient list, a list box was selected as it allows for the display of multiple text entries simultaneously and enables the selection of multiple entries by clicking. To facilitate the removal of recipients, a button titled "Remove Selected" was cleverly added below the ListBox widget, effectively resolving the issue.
+
+For adding recipients, a different approach was taken. Rather than using a sophisticated list box, a simple single-line text entry field was employed, accompanied by an "Add Recipient" button. Initially positioned at the section's bottom, the "Add Recipients" field was later relocated to the top after careful consideration, enhancing user-friendliness.
+
+By breaking down the GUI into smaller subsections, it became effortless to manipulate and reposition elements like puzzle pieces. Additionally, a section header was introduced for the recipient configuration controls, providing a cohesive and organized layout.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/5c1f5a9d-1651-42ca-8d05-c2defbd738ea)
+- Scheduled Time UI design
+
+Let's simplify this. For determining the digest's sending time, spin boxes were chosen to allow selection of the hour and minute in 24-hour format. For configuring sender credentials, text entry fields were planned for entering the account email and password. With each of the four subsections designed individually, it's now time to integrate them and assess their appearance collectively.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/5d7ef041-364f-4984-981f-606ca419b48c)
+- Sender credentials UI design
+
+Consider how the program should handle configuration updates. While an interface that automatically updates program variables based on field changes might seem convenient, it could also introduce unintended consequences. For instance, accidentally scrolling past the current time while setting a new send time could trigger an unwanted email digest. To prevent such mishaps, include an "Update Settings" button. This button will enable the admin to intentionally finalize the new configuration settings, minimizing the risk of unintended actions.
+
+### Exploring Python Tkinter GUI
+-------------------------------- 
+
+Now, let's explore the code implementing the GUI plan. The "dd GUI" module comprises around 250 lines, emphasizing essential design choices. For a deeper dive into the code, refer to the exercise files.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/ea027247-4018-4876-8498-1cf01229d6fd)
+- Tkinter GUI Code implementation
+
+In addition to importing Python's TKinter module, the daily digest email and scheduler modules are imported for interaction with their instances. Within the code, the "route" parameter in the initialization method of the daily digest class corresponds to the TKinter window where the GUI is constructed. Various elements such as title, header label, and font styles are added to the window using the TKinter API.
+
+The subsequent sections of the code follow a consistent pattern to create different parts of the GUI. For instance, to manage recipients, a TKinter frame named "recipients frame" is created and inserted into the window. TKinter variables store recipient data, passed along with the frame reference to the "build GUI recipients" function for widget creation. Similar processes are used to build other GUI sections like scheduling delivery time and configuring email content.
+
+Instead of instantiating variables within their respective builders, all variables are initialized within the initialization method for easier modification and debugging. The init method also starts the scheduler thread and registers an event to stop the thread before closing the GUI window.
+
+The functions for creating and placing GUI widgets are organized into two sections. Firstly, widgets are instantiated, including labels, entry fields, list boxes, and buttons. Then, the grid geometry manager is used to position the widgets within the frame, aiding in debugging and adjustment. Callback methods associated with buttons update the GUI based on user input, such as adding/removing recipients or updating settings.
+
+The final method, "shutdown," stops the scheduler thread before closing the GUI window. The script's main section spawns the GUI, allowing users to interact with controls for managing recipients, scheduling send time, selecting content, and updating settings. Additionally, buttons for immediate email digest and submitting changes enhance user experience. This Python GUI provides comprehensive controls for the project's requirements.
+
+### Iterative Enhancements
+--------------------------
+
+You've wrapped up the initial phase of the daily digest project, which is fantastic! It's inspiring to see your dedication to refining the application further. Based on your suggestions and prioritization of implementing configuration settings saving, here's a breakdown of tasks to consider:
+
+1. **Save Configuration Settings**: Adapt the program to store settings in a file or database, ensuring changes made by the admin persist across program restarts.
+
+2. **Customizable Content for Recipients**: Allow recipients to personalize their digest content by selecting preferred categories or topics through a recipient settings section.
+
+3. **Personalized Weather Forecast**: Enhance the weather forecast by tailoring it to each recipient's location, storing their location and retrieving location-specific forecasts from a weather API.
+
+4. **Timezone-based Email Sending**: Adjust email sending times based on recipient timezones, ensuring they receive the digest at an appropriate local time.
+
+5. **Admin Notifications for Unavailable Content Sources**: Implement a mechanism to alert the admin of issues with content sources, notifying them when a source becomes unavailable or encounters errors.
+
+6. **Persistent Application as a Scheduled Service**: Modify the application to run as a scheduled service, utilizing OS-specific mechanisms like cron jobs to execute the program at scheduled times.
+
+7. **Secure Storage of Sensitive Information**: Enhance application security by finding more secure methods to store sensitive information like credentials and API keys, such as encryption or restricted-access configuration files.
+
+8. **GUI Improvements**: Enhance the GUI's visual appeal and usability by refining layout, adding icons, incorporating color schemes, and integrating user-friendly features like tooltips or keyboard shortcuts.
+
+These tasks offer a solid starting point for further developing your daily digest project. Remember to prioritize based on your objectives and the impact each feature will have on user experience. Enjoy refining your application and gathering feedback from recipients to continue enhancing its functionality!
+
+### Preserving Configuration Settings
+-------------------------------------
+
+A new feature is being introduced to the program, focusing on saving and restoring configuration settings upon exiting and restarting the application. Fortunately, all the necessary settings are already integrated into the graphical user interface (GUI), streamlining the implementation process within the GUI module.
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/53102138-46ca-4c90-9e85-0da5ad0966a0)
+- Saving configurations
+
+To enable saving and restoring configuration settings between program runs, JSON was chosen as the file format. The JSON module was imported at the beginning of the code. Two new methods, "save_config" and "load_config," were added to the GUI class.
+
+In the "save_config" method, the current state of all GUI elements is gathered and stored in a configuration dictionary, which is then saved to a file using the JSON.dump function. The "load_config" method, on the other hand, loads the JSON file into a dictionary and uses it to set all the GUI variables. It then calls the "update_settings" method to apply the configuration.
+
+To integrate these methods into the program's flow, two calls were made. First, a try-except block was added in the "shutdown" method to save the current configuration when closing the program. Second, in the "init" method where initial values for GUI variables are set, a try clause was added to load the configuration from the JSON file. If loading fails, the application will revert to using the default settings.
+
+Implementing this new feature takes about half an hour but significantly enhances the usability of the digest project. With this task completed, it's time to move on to the next item on the to-do list.
+
+### Distributing Python Projects
+--------------------------------
+
+Continuously adding new features to your Python project can be an enjoyable and educational journey. However, there may come a point when you want to share your application with others, such as a family member like your mom who wants to send out her own daily email digest to friends and family.
+
+After customizing the app to meet her requirements, you'll need to package it in a user-friendly format. Simply handing her a bunch of .py files won't suffice, especially if she's not familiar with Python beyond it being a snake!
+
+Fortunately, there's a convenient tool called PyInstaller that simplifies the process of bundling a Python application and all its dependencies into a single package. You can easily install PyInstaller by running the command "pip install pyinstaller."
+
+![image](https://github.com/MihlaliKota/Intro-To-Python/assets/133135575/fdceded5-103f-4cd1-b0d3-1e6254fdab57)
+- Pyinstaller library
+
+After installing PyInstaller, open your terminal and navigate to your project directory. There, you can convert your app into an executable using the command "pyinstaller -w -F" followed by the main Python script (in this case, "dd_gui.py"). While PyInstaller does its work, let's understand what those flags signify.
+
+The "-w" flag instructs Windows and Mac OS not to display a console window when the program runs. This ensures that only the Tkinter GUI window is shown without any additional console window. The "-F" flag directs PyInstaller to create a standalone executable in a single file, bundling all necessary components for the program to run.
+
+After running PyInstaller, a "dist" folder is created in your project directory (if you're on Windows). Inside this folder, you'll find the generated EXE file. Now, you can share this executable with your mom or anyone else who wants to send their own digest emails. Simply double-clicking on it will launch the program and display the GUI.
+
+Remember, PyInstaller offers many more features beyond what we've discussed here. If you're interested in distributing your Python apps as executables, explore the PyInstaller documentation for comprehensive guidance.
+
